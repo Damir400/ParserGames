@@ -59,7 +59,7 @@ public class UbisoftStore {
                                     "        result.push({\n" +
                                     "            'name': document.querySelector('#search-result-items > li:nth-child(n + ' + i*3 +')').innerText.split('\\n')[0],\n" +
                                     "            'url': document.querySelector('#search-result-items > li:nth-child(n + ' + i*3 +') > div:nth-child(2) > a').href,\n" +
-                                    "            'img': document.querySelector('#search-result-items > li:nth-child(n + ' + i*3 +') > div > div').getElementsByTagName('img')[0].src\n" +
+                                    "            'img': document.querySelector('#search-result-items > li:nth-child(n + ' + i*3 +') > div > div').getElementsByTagName('img')[0].getAttribute('data-src')\n" +
                                     "        });\n" +
                                     "\n" +
                                     "    }" +

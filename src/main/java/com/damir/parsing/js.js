@@ -1,6 +1,24 @@
 function steamParser() {
     let result = [];
     let all = document.querySelectorAll("#search_resultsRows > a:nth-child(n+0)");
+    const ref = 'header.jpg?';
+    for (let i=0, max=all.length; i < max; i++) {
+        let prev = all[i].getElementsByTagName('img')[0].src.split('capsule');
+        let res = prev[0] + ref + prev[1].split('?')[1];
+        result.push({
+            'tag': all[i].innerText.split('\n')[0],
+            'url': all[i].href,
+            'img': res
+        });
+
+    }
+    return result;
+}
+
+
+function steamParser1() {
+    let result = [];
+    let all = document.querySelectorAll("#search_resultsRows > a:nth-child(n+0)");
 
     for (let i=0, max=all.length; i < max; i++) {
         result.push({
@@ -13,6 +31,17 @@ function steamParser() {
     return result;
 
 }
+
+
+
+
+
+
+
+
+
+
+
 steamParser();
 
 function ubisoftParser(){

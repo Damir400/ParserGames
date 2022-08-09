@@ -78,19 +78,22 @@ public class SteamStore {
         String json = null;
         while (json == null || json.isEmpty()){
             json = jse.executeScript(
-                            "let result = [];" +
-                                    "let all = document.querySelectorAll('#search_resultsRows > a:nth-child(n+" + count +")');\n" +
-                                    "for (let i=0, max=all.length; i < max; i++) {\n" +
-                                    "    result.push({\n" +
-                                    "        'name': all[i].innerText.split('\\n')[1],\n" +
-                                    "        'url': all[i].href,\n" +
-                                    "        'img': all[i].getElementsByTagName('img')[0].src\n" +
-                                    "    });\n" +
+                            "let result = [];\n" +
+                                    "    let all = document.querySelectorAll('#search_resultsRows > a:nth-child(n + "+ count +")');\n" +
+                                    "    const ref = 'header.jpg?';\n" +
+                                    "    for (let i=0, max=all.length; i < max; i++) {\n" +
+                                    "        let prev = all[i].getElementsByTagName('img')[0].src.split('capsule');\n" +
+                                    "        let res = prev[0] + ref + prev[1].split('?')[1];\n" +
+                                    "        result.push({\n" +
+                                    "            'name': all[i].innerText.split('\\n')[1],\n" +
+                                    "            'url': all[i].href,\n" +
+                                    "            'img': res\n" +
+                                    "        });\n" +
                                     "}\n" +
                                     "return JSON.stringify(result);")
                     .toString();
         }
-
+//document.querySelectorAll('#search_resultsRows > a:nth-child(n+" + count +")')[i].getElementsByTagName('img')[0].src
         gamesArray = gson.fromJson(json, Games[].class);
         System.out.println("Steam games: " + gamesArray.length);
         return gamesArray;
