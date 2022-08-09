@@ -41,7 +41,7 @@ public class UbisoftStore {
 
         webElement = new WebDriverWait(webDriver, Duration.ofSeconds(1)).until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@id=\"primary\"]/div[2]/div[2]/div/p/span")));
         int k = Integer.parseInt(webDriver.findElement(By.xpath("//*[@id=\"primary\"]/div[2]/div[2]/div/p/span")).getText());
-
+        Thread.sleep(5000);
         jse = (JavascriptExecutor) webDriver;
         Games[] games = ubisoftGamesParsing(k, jse);
         System.out.println("Ubisoft games: " + games.length);
