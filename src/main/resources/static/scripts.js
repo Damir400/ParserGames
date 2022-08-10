@@ -1,64 +1,36 @@
-//Отправляет запрос для получения гифки.
-let imagesUrls = [];
-let gamesUrls = [];
-let imagesItems = [];
-let imagesLoaded = 0;
 
-// function waiter(){
-//     let gifWaiter = new Image();
-//     gifWaiter.src = "/images/waitLoader.gif";
-//     document.body.appendChild(gifWaiter);
-// }
-//
-// function createGif() {
-//     for (const item of imagesUrls) {
-//         let img = new Image(500,500);
-//         img.onload = function() {
-//             imagesLoaded++;
-//         }
-//         img.src = item.url;
-//         imagesItems.push(img);
-//     }
-// }
-//
-// async function loadResultGif() {
-//     imagesLoaded = 0;
-//     imagesUrls = [];
-//     imagesItems = [];
-//     document.querySelector('img')?.remove();
-//     waiter();
-//     let code = $("#codesSelector").val();
-//     const result = await (await fetch('./api/epic/' + code)).json();
-//     imagesUrls.push(...result);
-//     createGif();
-// }
+
+let countPages = 0;
 
 //Заполняет select
 async function loadGames() {
-    imagesItems = [];
-    gamesUrls = [];
-    imagesUrls = [];
-
     const data = await (await fetch('./api/getgames')).json();
     buildCardsContainer(data);
+}
 
+async function loadGames(page) {
+    const data = await (await fetch("./api/games/" + page)).json();
+    buildCardsContainer(data);
 }
 
 function buildCard(game){
     let h5 = document.createElement('h5');
     h5.className = 'card-title';
     h5.textContent = game.name;
-
+    //h5.href = game.url;
     let div3 = document.createElement('div');
     div3.className = 'card-body';
-    div3.href = game.url;
     let img = new Image();
     img.className = 'card-img-top';
     img.src = game.img;
     let div2 = document.createElement('div');
     div2.className = 'card';
+
     let div1 = document.createElement('div');
     div1.className = 'col';
+    div1.addEventListener('click', function() {
+        location.href = game.url
+    }, false);
 
     div3.appendChild(h5);
     div2.appendChild(img);
@@ -75,27 +47,52 @@ function buildCardsContainer(games){
     else {
         count = games.length;
     }
-    let addgames = document.querySelector("#gamecards");
+    let addGames = document.querySelector("#gamecards");
+    addGames.innerHTML = '';
+
     for (let i = 0; i < count; i++) {
         let card = buildCard(games[i]);
-        addgames.insertAdjacentElement("beforeend", card);
+        addGames.insertAdjacentElement("beforeend", card);
     }
 }
 
+function getPageButton(page, name){
+
+    let li = document.createElement('li');
+    li.className = 'page-item';
+    let a = document.createElement('a');
+    a.className = 'page-link';
+    a.textContent = name;
+
+    a.addEventListener('click', function() {
+        a.href = '#';
+        loadGames(page);
+    }, false);
+    li.appendChild(a);
+    return li;
+}
+
+function addPageBar(countPages){
+    let addPageNavBar = document.querySelector("#topPageNavBar");
+
+    addPageNavBar.innerHTML = '';
+    addPageNavBar.insertAdjacentElement("beforeend", getPageButton(12,'previous'));
+
+    for (let i = 1; i <= countPages; i++) {
+        addPageNavBar.insertAdjacentElement("beforeend", getPageButton(i,i));
+    }
+    addPageNavBar.insertAdjacentElement("beforeend", getPageButton(13,'next'));
+}
+
 async function parsingData(){
-    await (await fetch('./api/load'));
+    countPages = await (await fetch('./api/load')).json();
 }
 //window.onload = loadGames;
+async function getPageCount(){
+    countPages = await (await fetch('./api/getPagesCount')).json();
+}
 
-// let changeIndex = 0;
-
-// setInterval(() => {
-//     if (imagesLoaded == imagesUrls.length && imagesLoaded > 0) {
-//         document.querySelector('img')?.remove();
-//         document.body.appendChild(imagesItems[changeIndex]);
-//         changeIndex++;
-//         if(changeIndex === imagesUrls.length) {
-//             changeIndex = 0;
-//         }
-//     }
-// }, 100)
+window.onload = async function (){
+    await getPageCount();
+    addPageBar(countPages);
+};

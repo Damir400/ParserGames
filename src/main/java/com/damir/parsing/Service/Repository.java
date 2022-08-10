@@ -53,25 +53,40 @@ public class Repository <T>{
     }
 
     public List<Games> getItems(List<Games> entities){
-//        try {
             Session session = factory.getCurrentSession();
             session.beginTransaction();
 
             entities = session.createQuery("SELECT a FROM Games a", Games.class).getResultList();
             session.getTransaction().commit();
-//            for(int i=0; i<entities.size();i++){
-//                session.get(entities.get(i).getClass(),entities.get(i));
-//            }
-//            session.getTransaction().commit();
-//        }
-//        catch (Exception e){
-//            System.out.println(e.getMessage());
-//        }
-//        finally {
-//            factory.close();
-//        }
-
          return entities;
+    }
+
+    public List<Games> getItems(int count, int offset){
+        List<Games> entities;
+
+        Session session = factory.getCurrentSession();
+        session.beginTransaction();
+
+        Query query = session.createQuery("SELECT a FROM Games a")
+                .setFirstResult(offset)
+                .setMaxResults(count);
+
+        entities = query.getResultList();
+        session.getTransaction().commit();
+
+        return entities;
+    }
+
+    public Long getCountItems(){
+        Session session = factory.getCurrentSession();
+        session.beginTransaction();
+
+        Query query = session.createQuery("SELECT COUNT (a) FROM Games a");
+
+        Long res = (Long) query.uniqueResult();
+        session.getTransaction().commit();
+
+        return res;
     }
 
     public void delItems(){
