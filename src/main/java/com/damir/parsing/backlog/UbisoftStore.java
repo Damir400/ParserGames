@@ -21,7 +21,7 @@ public class UbisoftStore {
 
     public void dataParsing(WebDriver webDriver) throws InterruptedException {
 
-        Repository<Games> repositoryGame = new Repository<Games>();
+        Repository<Games> repositoryGame = new Repository<Games>(Games.class);
 
         webDriver.get("https://store.ubi.com/us/free-pc-games/?lang=en_US");
 

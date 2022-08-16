@@ -19,7 +19,7 @@ public class HambleStore {
     static JavascriptExecutor jse;
     public void dataParsing(WebDriver webDriver) throws InterruptedException {
 
-        Repository<Games> repositoryGame = new Repository<Games>();
+        Repository<Games> repositoryGame = new Repository<Games>(Games.class);
         //EdgeOptions edgeOptions = new EdgeOptions();
         //edgeOptions.addArguments("headless");
         webDriver = new EdgeDriver();

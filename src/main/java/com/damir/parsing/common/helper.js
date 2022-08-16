@@ -6,7 +6,8 @@ function filterTag(){
     let tags = document.querySelectorAll("#TagFilter_Container > div:nth-child(n+0)");
     for (let i = 1; i < tags.length; i++) {
         allTags.push({
-            'tagName': tags[i].getElementsByClassName('tab_filter_control_label')[0].innerText.replaceAll('\n', '').replaceAll('\t','')
+            'tagName': tags[i].getElementsByClassName('tab_filter_control_label')[0].innerText.replaceAll('\n', '').replaceAll('\t',''),
+            'count': 0
         });
     }
     return allTags;

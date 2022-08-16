@@ -1,4 +1,4 @@
-package com.damir.parsing.controller;
+package com.damir.parsing.entity.controller;
 
 import com.damir.parsing.entity.Games;
 import com.damir.parsing.common.Helper;
@@ -27,7 +27,7 @@ public class MainController {
     private HambleStore hambleStore;
     private UbisoftStore ubisoftStore;
     private SteamStore steamStore;
-    private Repository<Games> repository = new Repository<>();
+    private Repository<Games> repository = new Repository<>(Games.class);
 
     private EdgeOptions edgeOptions = null;
     private WebDriver webDriver = null;
@@ -53,11 +53,13 @@ public class MainController {
     public Long addGames() throws InterruptedException {
         repository.delItems();
         initWebDriver();
-
+        steamStore.parsingTagsForSteam(webDriver);
 //        ubisoftStore.dataParsing(webDriver);
         steamStore.dataParsing(webDriver);
 //        hambleStore.dataParsing(webDriver);
         webDriver.close();
+
+
 
         Long gamesCount = repository.getCountItems();
         BigDecimal result = new BigDecimal(gamesCount.doubleValue()/pageMaxItems);

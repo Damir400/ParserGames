@@ -1,10 +1,12 @@
 package com.damir.parsing.entity;
 
+import com.damir.parsing.ICrudable;
+
 import javax.persistence.*;
 
 @Entity
 @Table(name = "games")
-public class Games {
+public class Games implements ICrudable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "game_id")

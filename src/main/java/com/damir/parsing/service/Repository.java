@@ -1,17 +1,20 @@
 package com.damir.parsing.service;
 
+import com.damir.parsing.ICrudable;
 import com.damir.parsing.entity.Games;
+import com.damir.parsing.entity.Tags;
+import com.fasterxml.classmate.AnnotationConfiguration;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.hibernate.query.Query;
 import java.util.List;
 
-public class Repository <T>{
+public class Repository <T extends ICrudable> {
     SessionFactory factory;
-    public Repository(){
+    public Repository(Class<T> iCrudableClass){
          factory = new Configuration().
-                configure("hibernate.cfg.xml").addAnnotatedClass(Games.class).
+                configure("hibernate.cfg.xml").addAnnotatedClass(iCrudableClass).
                 buildSessionFactory();
     }
 
@@ -70,5 +73,15 @@ public class Repository <T>{
         Query query = session.createQuery("DELETE FROM Games");
         query.executeUpdate();
         session.getTransaction().commit();
+    }
+
+    public int addTags(T[] entities){
+        Session session = factory.getCurrentSession();
+        session.beginTransaction();
+        for(T entity : entities){
+            session.persist(entity);
+        }
+        session.getTransaction().commit();
+        return entities.length;
     }
 }

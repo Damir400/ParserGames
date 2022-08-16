@@ -36,4 +36,16 @@ public class Constants {
                 "    }\n" +
                 "    return JSON.stringify(result);";
     }
+
+    public static String getAllTagsBySteam(){
+        return  "    let allTags = [];\n" +
+                "    let tags = document.querySelectorAll(\"#TagFilter_Container > div:nth-child(n+0)\");\n" +
+                "    for (let i = 1; i < tags.length; i++) {\n" +
+                "        allTags.push({\n" +
+                "            'tagName': tags[i].getElementsByClassName('tab_filter_control_label')[0].innerText.replaceAll('\\n', '').replaceAll('\\t',''),\n" +
+                "            'count': 0" +
+                "        });\n" +
+                "    }\n" +
+                "    return JSON.stringify(allTags);";
+    }
 }
