@@ -8,6 +8,7 @@ import com.damir.parsing.Service.Repository;
 import com.damir.parsing.Service.SteamStore;
 import com.damir.parsing.Service.UbisoftStore;
 import com.google.gson.Gson;
+import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
@@ -42,8 +43,10 @@ public class MainController {
     public static void initWebDriver() {
         System.setProperty("webdriver.edge.driver", "driver\\msedgedriver.exe");
         edgeOptions = new EdgeOptions();
+
         edgeOptions.addArguments("headless");
         webDriver = new EdgeDriver(edgeOptions);
+        webDriver.manage().window().setSize(new Dimension(1920,1080));
     }
 
     public MainController(HambleStore hambleStore, UbisoftStore ubisoftStore, SteamStore steamStore){
@@ -57,9 +60,9 @@ public class MainController {
         repository.delItems();
         initWebDriver();
 
-        //ubisoftStore.dataParsing(webDriver);
-        //steamStore.dataParsing(webDriver);
-        hambleStore.dataParsing(webDriver);
+//        ubisoftStore.dataParsing(webDriver);
+        steamStore.dataParsing(webDriver);
+//        hambleStore.dataParsing(webDriver);
         webDriver.close();
 
         Long gamesCount = repository.getCountItems();

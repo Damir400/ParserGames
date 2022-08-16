@@ -1,3 +1,60 @@
+
+
+
+function filterTag(){
+    let allTags = [];
+    let tags = document.querySelectorAll("#TagFilter_Container > div:nth-child(n+0)");
+    for (let i = 1; i < tags.length; i++) {
+        allTags.push({
+            'tagNumber': tags[i].getAttribute('data-value'),
+            'tagName': tags[i].getElementsByClassName('tab_filter_control_label')[0].innerText.replaceAll('\n', '').replaceAll('\t','')
+        });
+    }
+    return allTags;
+}
+
+function steamParserWithTag() {
+    let allTags = [];
+    let result = [];
+    let tagNamesGame = [];
+
+    let tags = document.querySelectorAll("#TagFilter_Container > div:nth-child(n+0)");
+    for (let i = 1; i < tags.length; i++) {
+        allTags.push({
+            'tagNumber': tags[i].getAttribute('data-value'),
+            'tagName': tags[i].getElementsByClassName('tab_filter_control_label')[0].innerText.replaceAll('\n', '').replaceAll('\t','')
+        });
+    }
+    let all = document.querySelectorAll("#search_resultsRows > a:nth-child(n+0)");
+    const ref = 'header.jpg?';
+    for (let i=0, max=all.length; i < max; i++) {
+        let prev = all[i].getElementsByTagName('img')[0].src.split('capsule');
+        let res = prev[0] + ref + prev[1].split('?')[1];
+        //---------------------------
+        let allTagsGame = all[i].getAttribute('data-ds-tagids').split(',');
+        tagNamesGame = allTags.filter((el) => {
+            return allTagsGame.some((f) => {
+                return f === el.tagNumber;
+            });
+        });
+        result.push({
+            'name': all[i].innerText.split('\n')[1],
+            'url': all[i].href,
+            'img': res,
+            'tags': tagNamesGame.map(a => a.tagName).join(';'),
+            'nameStore': 'Steam'
+        });
+
+    }
+    return JSON.stringify(result);
+}
+
+
+
+
+
+
+
 function steamParser() {
     let result = [];
     let all = document.querySelectorAll("#search_resultsRows > a:nth-child(n+0)");

@@ -1,5 +1,6 @@
 package com.damir.parsing.Service;
 
+import com.damir.parsing.Constans;
 import com.damir.parsing.Entity.Games;
 import com.google.gson.Gson;
 import org.openqa.selenium.By;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
+import java.util.Map;
 
 @Service
 public class SteamStore {
@@ -74,30 +76,42 @@ public class SteamStore {
 //        return gamesList;
 //    }
 
-    public static Games[] SteamGamesParsingJS(int count){
+
+// -------------------------------------------------- рабочий код
+//    public static Games[] SteamGamesParsingJS(int count){
+//        String json = null;
+//        while (json == null || json.isEmpty()){
+//            json = jse.executeScript(
+//                            "let result = [];\n" +
+//                                    "    let all = document.querySelectorAll('#search_resultsRows > a:nth-child(n + "+ count +")');\n" +
+//                                    "    const ref = 'header.jpg?';\n" +
+//                                    "    for (let i=0, max=all.length; i < max; i++) {\n" +
+//                                    "        let prev = all[i].getElementsByTagName('img')[0].src.split('capsule');\n" +
+//                                    "        let res = prev[0] + ref + prev[1].split('?')[1];\n" +
+//                                    "        result.push({\n" +
+//                                    "            'name': all[i].innerText.split('\\n')[1],\n" +
+//                                    "            'url': all[i].href,\n" +
+//                                    "            'img': res\n" +
+//                                    "        });\n" +
+//                                    "}\n" +
+//                                    "return s")
+//                    .toString();
+//        }
+//        gamesArray = gson.fromJson(json, Games[].class);
+//        System.out.println("Steam games: " + gamesArray.length);
+//        return gamesArray;
+//    }
+//}
+//--------------------------------------------------------------------------------------
+
+public static Games[] SteamGamesParsingJS(int count){
+
         String json = null;
         while (json == null || json.isEmpty()){
-            json = jse.executeScript(
-                            "let result = [];\n" +
-                                    "    let all = document.querySelectorAll('#search_resultsRows > a:nth-child(n + "+ count +")');\n" +
-                                    "    const ref = 'header.jpg?';\n" +
-                                    "    for (let i=0, max=all.length; i < max; i++) {\n" +
-                                    "        let prev = all[i].getElementsByTagName('img')[0].src.split('capsule');\n" +
-                                    "        let res = prev[0] + ref + prev[1].split('?')[1];\n" +
-                                    "        result.push({\n" +
-                                    "            'name': all[i].innerText.split('\\n')[1],\n" +
-                                    "            'url': all[i].href,\n" +
-                                    "            'img': res\n" +
-                                    "        });\n" +
-                                    "}\n" +
-                                    "return JSON.stringify(result);")
-                    .toString();
+            json = jse.executeScript(Constans.getSteamParingJsScript()).toString();
         }
-//document.querySelectorAll('#search_resultsRows > a:nth-child(n+" + count +")')[i].getElementsByTagName('img')[0].src
         gamesArray = gson.fromJson(json, Games[].class);
         System.out.println("Steam games: " + gamesArray.length);
         return gamesArray;
     }
 }
-
-

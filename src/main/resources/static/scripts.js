@@ -1,16 +1,29 @@
 
-
+const prevBtnName = 'Prev';
+const nextBtnName = 'Next';
 let countPages = 0;
+let currentPage = 0;
+
 
 //Заполняет select
-async function loadGames() {
-    const data = await (await fetch('./api/getgames')).json();
-    buildCardsContainer(data);
-}
+// async function loadGames() {
+//     await reloadPageNavBar();
+//     const data = await (await fetch('./api/getgames')).json();
+//     buildCardsContainer(data);
+// }
 
 async function loadGames(page) {
+    if(page) {
+        currentPage = page;
+    }
+    else {
+        currentPage = page = 1;
+    }
+    //li.setAttribute( 'aria-current',page);
+    await reloadPageNavBar();
     const data = await (await fetch("./api/games/" + page)).json();
     buildCardsContainer(data);
+
 }
 
 function buildCard(game){
@@ -60,39 +73,97 @@ function getPageButton(page, name){
 
     let li = document.createElement('li');
     li.className = 'page-item';
+
+    if(name === prevBtnName && currentPage === 1) {
+        li.className = li.className + ' disabled';
+    }
+
+    if(name == nextBtnName && currentPage === countPages) {
+        li.className = li.className + ' disabled';
+    }
+
+    if(page === currentPage) {
+        li.setAttribute('aria-current', "page");
+        li.className = li.className + ' active';
+    }
+
     let a = document.createElement('a');
     a.className = 'page-link';
     a.textContent = name;
 
-    a.addEventListener('click', function() {
-        a.href = '#';
-        loadGames(page);
-    }, false);
+    if(page > 0 && page !== currentPage) {
+        a.addEventListener('click', function () {
+            a.href = '#';
+            loadGames(page);
+        }, false);
+    }
+
     li.appendChild(a);
     return li;
 }
 
 function addPageBar(countPages){
+    if(currentPage === 0 && countPages > 0) {
+        currentPage = 1;
+    }
     let addPageNavBar = document.querySelector("#topPageNavBar");
 
     addPageNavBar.innerHTML = '';
-    addPageNavBar.insertAdjacentElement("beforeend", getPageButton(12,'previous'));
 
-    for (let i = 1; i <= countPages; i++) {
-        addPageNavBar.insertAdjacentElement("beforeend", getPageButton(i,i));
+    if(currentPage === 1) {
+        addPageNavBar.insertAdjacentElement("beforeend", getPageButton(currentPage, prevBtnName));
     }
-    addPageNavBar.insertAdjacentElement("beforeend", getPageButton(13,'next'));
+    else {
+        addPageNavBar.insertAdjacentElement("beforeend", getPageButton(currentPage-1, prevBtnName));
+    }
+
+    if(countPages<=7) {
+        for (let i = 1; i <= countPages; i++) {
+            addPageNavBar.insertAdjacentElement("beforeend", getPageButton(i, i));
+        }
+    }
+    else {
+        for (let i = 1; i <= 3; i++) {
+            addPageNavBar.insertAdjacentElement("beforeend", getPageButton(i, i));
+        }
+        addPageNavBar.insertAdjacentElement("beforeend", getPageButton(0, '...'));
+        for (let i = countPages-2; i <= countPages; i++) {
+                addPageNavBar.insertAdjacentElement("beforeend", getPageButton(i, i));
+        }
+    }
+
+    if(currentPage === countPages) {
+        addPageNavBar.insertAdjacentElement("beforeend", getPageButton(countPages, nextBtnName));
+    }
+    else if(currentPage < countPages) {
+        addPageNavBar.insertAdjacentElement("beforeend", getPageButton(currentPage + 1, nextBtnName));
+    }
 }
 
 async function parsingData(){
     countPages = await (await fetch('./api/load')).json();
+    addPageBar(countPages);
 }
 //window.onload = loadGames;
 async function getPageCount(){
     countPages = await (await fetch('./api/getPagesCount')).json();
 }
 
-window.onload = async function (){
+
+async function reloadPageNavBar(){
     await getPageCount();
     addPageBar(countPages);
+}
+
+
+
+
+
+
+
+//вызывется при загрузке страницы (подгружает navBar)
+window.onload = async function (){
+    await reloadPageNavBar();
 };
+
+

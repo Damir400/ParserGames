@@ -18,13 +18,21 @@ public class Games {
     @Column(name = "img")
     private String img;
 
+    @Column(name = "tags")
+    private String tags;
+
+    @Column(name = "nameStore")
+    private String nameStore;
+
     public Games() {
     }
 
-    public Games(String name, String url, String img) {
+    public Games(String name, String url, String img, String tags, String nameStore) {
         this.name = name;
         this.url = url;
         this.img = img;
+        this.tags = tags;
+        this.nameStore = nameStore;
     }
 
     @Override
@@ -34,6 +42,8 @@ public class Games {
                 ", name='" + name + '\'' +
                 ", url='" + url + '\'' +
                 ", img='" + img + '\'' +
+                ", genre='" + tags + '\'' +
+                ", nameStore='" + nameStore + '\'' +
                 '}';
     }
 
@@ -63,6 +73,22 @@ public class Games {
 
     public void setImg(String img) {
         this.img = img;
+    }
+
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String genre) {
+        this.tags = genre;
+    }
+
+    public String getNameStore() {
+        return nameStore;
+    }
+
+    public void setNameStore(String nameStore) {
+        this.nameStore = nameStore;
     }
 }
 
