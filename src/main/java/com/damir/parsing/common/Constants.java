@@ -1,6 +1,6 @@
-package com.damir.parsing;
+package com.damir.parsing.common;
 
-public class Constans {
+public class Constants {
     public static String getSteamParingJsScript(){
         return "let allTags = [];\n" +
                 "    let result = [];\n" +

@@ -1,12 +1,10 @@
-package com.damir.parsing.Entity;
-
+package com.damir.parsing.entity;
 
 import javax.persistence.*;
 
 @Entity
 @Table(name = "games")
 public class Games {
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "game_id")
@@ -17,10 +15,8 @@ public class Games {
     private String url;
     @Column(name = "img")
     private String img;
-
     @Column(name = "tags")
     private String tags;
-
     @Column(name = "nameStore")
     private String nameStore;
 

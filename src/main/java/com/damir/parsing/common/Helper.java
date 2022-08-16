@@ -1,4 +1,4 @@
-package com.damir.parsing;
+package com.damir.parsing.common;
 
 public class Helper {
     public static int tryParseInt(String value, int defaultVal) {

@@ -1,22 +1,17 @@
-package com.damir.parsing.Service;
+package com.damir.parsing.backlog;
 
-import com.damir.parsing.Entity.Games;
+import com.damir.parsing.entity.Games;
+import com.damir.parsing.service.Repository;
 import com.google.gson.Gson;
 import org.openqa.selenium.By;
 import org.openqa.selenium.JavascriptExecutor;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
-import org.openqa.selenium.edge.EdgeDriver;
-import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.springframework.beans.factory.annotation.Qualifier;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.time.Duration;
-import java.util.ArrayList;
-import java.util.List;
 
 @Service
 public class UbisoftStore {

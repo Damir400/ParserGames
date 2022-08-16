@@ -1,46 +1,40 @@
-package com.damir.parsing.Controller;
+package com.damir.parsing.controller;
 
-
-import com.damir.parsing.Entity.Games;
-import com.damir.parsing.Helper;
-import com.damir.parsing.Service.HambleStore;
-import com.damir.parsing.Service.Repository;
-import com.damir.parsing.Service.SteamStore;
-import com.damir.parsing.Service.UbisoftStore;
+import com.damir.parsing.entity.Games;
+import com.damir.parsing.common.Helper;
+import com.damir.parsing.backlog.HambleStore;
+import com.damir.parsing.service.Repository;
+import com.damir.parsing.service.SteamStore;
+import com.damir.parsing.backlog.UbisoftStore;
 import com.google.gson.Gson;
 import org.openqa.selenium.Dimension;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-
-
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 @RestController
 @RequestMapping("api")
 public class MainController {
-
     private Gson gson = new Gson();
     private HambleStore hambleStore;
     private UbisoftStore ubisoftStore;
     private SteamStore steamStore;
     private Repository<Games> repository = new Repository<>();
 
-    static EdgeOptions edgeOptions = null;
-    static WebDriver webDriver = null;
+    private EdgeOptions edgeOptions = null;
+    private WebDriver webDriver = null;
 
-    static int pageMaxItems = 25;
+    private final int pageMaxItems = 25;
 
-    public static void initWebDriver() {
+    public void initWebDriver() {
         System.setProperty("webdriver.edge.driver", "driver\\msedgedriver.exe");
         edgeOptions = new EdgeOptions();
 
@@ -79,8 +73,8 @@ public class MainController {
         return result.longValue();
     }
 
-    @GetMapping("/getgames")
-    public String getGames() throws InterruptedException {
+    @GetMapping("/getGames")
+    public String getGames() {
         List<Games> gamesList = repository.getItems(new ArrayList<Games>());
         String result = gson.toJson(gamesList);
         return result;

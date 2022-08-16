@@ -1,16 +1,7 @@
-
 const prevBtnName = 'Prev';
 const nextBtnName = 'Next';
 let countPages = 0;
 let currentPage = 0;
-
-
-//Заполняет select
-// async function loadGames() {
-//     await reloadPageNavBar();
-//     const data = await (await fetch('./api/getgames')).json();
-//     buildCardsContainer(data);
-// }
 
 async function loadGames(page) {
     if(page) {
@@ -19,23 +10,23 @@ async function loadGames(page) {
     else {
         currentPage = page = 1;
     }
-    //li.setAttribute( 'aria-current',page);
     await reloadPageNavBar();
     const data = await (await fetch("./api/games/" + page)).json();
     buildCardsContainer(data);
-
 }
 
 function buildCard(game){
     let h5 = document.createElement('h5');
     h5.className = 'card-title';
     h5.textContent = game.name;
-    //h5.href = game.url;
+
     let div3 = document.createElement('div');
     div3.className = 'card-body';
+
     let img = new Image();
     img.className = 'card-img-top';
     img.src = game.img;
+
     let div2 = document.createElement('div');
     div2.className = 'card';
 
