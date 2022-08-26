@@ -15,6 +15,12 @@ async function loadGames(page) {
     buildCardsContainer(data);
 }
 
+async function searchGames(){
+    let name = document.getElementById("searchGames").value;
+    const data = await (await fetch("./api/searchGames/" + name)).json();
+    buildCardsContainer(data);
+}
+
 function buildCard(game){
     let h5 = document.createElement('h5');
     h5.className = 'card-title';

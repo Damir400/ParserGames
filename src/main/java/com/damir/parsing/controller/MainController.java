@@ -1,4 +1,4 @@
-package com.damir.parsing.entity.controller;
+package com.damir.parsing.controller;
 
 import com.damir.parsing.entity.Games;
 import com.damir.parsing.common.Helper;
@@ -88,6 +88,13 @@ public class MainController {
         int offset = pageMaxItems * (newPage - 1);
 
         List<Games> gamesList = repository.getItems(pageMaxItems, offset);
+        String result = gson.toJson(gamesList);
+        return result;
+    }
+
+    @GetMapping("/searchGames/{name}")
+    public String searchGames(@PathVariable(value = "name") String name) {
+        List<Games> gamesList = repository.searchItems(name);
         String result = gson.toJson(gamesList);
         return result;
     }

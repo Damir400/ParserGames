@@ -4,9 +4,12 @@ import com.damir.parsing.ICrudable;
 import com.damir.parsing.entity.Games;
 import com.damir.parsing.entity.Tags;
 import com.fasterxml.classmate.AnnotationConfiguration;
+import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
+import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Restrictions;
 import org.hibernate.query.Query;
 import java.util.List;
 
@@ -83,5 +86,20 @@ public class Repository <T extends ICrudable> {
         }
         session.getTransaction().commit();
         return entities.length;
+    }
+
+    public List<Games> searchItems(String name){
+        List<Games> entities;
+        Session session = factory.getCurrentSession();
+        session.beginTransaction();
+        //Query query = session.createQuery("SELECT a FROM games a WHERE name ILIKE '%" + name + "%'");
+
+        Criteria criteria = session.createCriteria(Games.class);
+        criteria.add(Restrictions.ilike("name",name, MatchMode.ANYWHERE));
+        List<Games> result = criteria.list();
+
+        //entities = query.getResultList();
+        session.getTransaction().commit();
+        return result;
     }
 }

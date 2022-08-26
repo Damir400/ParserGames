@@ -99,7 +99,6 @@ function steamParser1() {
 
 
 
-steamParser();
 
 function ubisoftParser(){
     let result = [];
@@ -114,8 +113,6 @@ function ubisoftParser(){
     }
     return JSON.stringify(result);
 }
-
-steamParser();
 
 function hambleParser(){
     let result = [];

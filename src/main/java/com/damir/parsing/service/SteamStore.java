@@ -15,7 +15,6 @@ public class SteamStore {
     private JavascriptExecutor jse;
     private Gson gson = new Gson();
 
-
     public void dataParsing(WebDriver webDriver) throws InterruptedException {
         Repository<Games> gamesRepo = new Repository<Games>(Games.class);
         webDriver.get("https://store.steampowered.com/search/?sort_by=Price_ASC&maxprice=free&tags=113&category1=998&os=win&genre=Free+to+Play");
@@ -26,9 +25,12 @@ public class SteamStore {
         int count = 0;
         do {
             if(count>=3000){
+                gamesRepo.addItems(SteamGamesParsingJS());
                 break;
             }
-            count += gamesRepo.addItems(SteamGamesParsingJS());
+//            count += gamesRepo.addItems(SteamGamesParsingJS());
+            count += 50;
+            SteamGamesParsingJS();
             jse.executeScript("window.scrollBy(0,4000)");
         } while (true);
     }
